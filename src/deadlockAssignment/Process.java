@@ -5,7 +5,7 @@ public class Process {
 	private static int numberOfResources;
 	private int[] allocation;
 	private int[] maximum;
-	private int[] need;
+	public int[] need;
 	private boolean finish;
 
 	public Process(int numberOfResources, int[] allocation, int[] maximum) {
@@ -62,6 +62,9 @@ public class Process {
 
 	public int[] getAllocation() {
 		return allocation;
+	}
+	public int getAllocationIndex(int i) {
+		return allocation[i];
 	}
 	public void setAllocation(int[] allocation) {
 		this.allocation = allocation;

@@ -8,7 +8,9 @@ public class TestProgram {
 	private int numberResouces;
 	private Process process[];
 	private int available[];
-
+	private int pNumber;
+	private int requests[];
+	private int release[];
 	public TestProgram() {
 		EnterNumberOfProcesses();
 		process = new Process[numberProcesses];
@@ -17,8 +19,12 @@ public class TestProgram {
 		EnterAllocationAndMaximum();
 		Deadlock deadlock = new Deadlock(process, available);
 		deadlock.bankerAlgorithm();
+		requestProcess();
+		deadlock.bankerAlgorithm();
+		deadlock.processRequest(pNumber,requests);
+		processRelease();
+		deadlock.processRelease(pNumber,requests);
 	}
-
 	public void EnterNumberOfProcesses() {
 		System.out.print("Enter number of Processes: ");
 		numberProcesses = input.nextInt();
@@ -55,5 +61,28 @@ public class TestProgram {
 			process[i] = new Process(numberResouces, allocation, maximum);
 		}
 	}
-
+	public void requestProcess()
+	{
+		System.out.println();
+		requests=new int[numberResouces];
+		System.out.println("enter process number");
+		pNumber=input.nextInt();
+		System.out.println("enter number of items you want for each process");
+		for (int i = 0; i < numberResouces; i++) {
+			requests[i] = input.nextInt();
+		}
+		
+	}
+	public void processRelease()
+	{
+		System.out.println();
+		release=new int[numberResouces];
+		System.out.println("enter process number");
+		pNumber=input.nextInt();
+		System.out.println("enter number of items you want for each process");
+		for (int i = 0; i < numberResouces; i++) {
+			release[i] = input.nextInt();
+		}
+		
+	}
 }

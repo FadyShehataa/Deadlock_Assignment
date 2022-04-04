@@ -2,7 +2,6 @@ package deadlockAssignment;
 import java.util.ArrayList;
 
 public class Deadlock {
-
 	private Process process[];
 	private int[] available;
 	private boolean state;
@@ -14,7 +13,7 @@ public class Deadlock {
 		this.available = available;
 		this.state = false;
 	}
-
+	
 	// Function take process and check if its need <= available(return true) ,else (return false)
 	private boolean isLessThanOrEqual(Process p) {
 		for (int i = 0; i < Process.getNumberOfResources(); i++) {
@@ -83,7 +82,6 @@ public class Deadlock {
 			}
 		}
 	}
-
 	// function print state(approve or deny)
 	public void printState() {
 		if (state) {
@@ -92,5 +90,44 @@ public class Deadlock {
 			System.out.println("the bank decisions to deny the requests");
 		}
 	}
-
+	public void processRequest(int p,int[]request)
+	{
+		Process proc=process[p-1];
+		boolean flag=true;
+		for(int i=0;i<available.length;i++)
+		{
+			if((request[i]>available[i]||request[i]>proc.need[i]))
+			{
+				flag=false;
+			}
+		}
+		if(flag)
+		{
+			for(int i=0;i<request.length;i++)
+			{
+				proc.getAllocation()[i]+=request[i];
+			}
+			
+		}
+	}
+	public void processRelease(int p,int[]release)
+	{
+		Process proc=process[p-1];
+		boolean flag=true;
+		for(int i=0;i<proc.getAllocation().length;i++)
+		{
+			if(proc.getAllocation()[i]<release[i])
+			{
+				flag=false;
+			}
+		}
+		if(flag)
+		{
+			for(int i=0;i<proc.getAllocation().length;i++)
+			{
+				proc.getAllocation()[i]-=release[i];
+			}
+		}
+		System.out.println("Release successful");
+	}
 }
