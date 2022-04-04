@@ -32,6 +32,9 @@ public class Deadlock {
 	}
 
 	public void display() {
+		System.out.println(process.length);
+		System.out.println(available.length);
+		
 		System.out.println();
 		for (int i = 0; i < process.length; i++) {
 			process[i].display();

@@ -20,8 +20,9 @@ public class TestProgram {
 		Deadlock deadlock = new Deadlock(process, available);
 		deadlock.bankerAlgorithm();
 		requestProcess();
-		deadlock.bankerAlgorithm();
+		
 		deadlock.processRequest(pNumber,requests);
+		deadlock.bankerAlgorithm();
 		processRelease();
 		deadlock.processRelease(pNumber,requests);
 	}
@@ -67,7 +68,7 @@ public class TestProgram {
 		requests=new int[numberResouces];
 		System.out.println("enter process number");
 		pNumber=input.nextInt();
-		System.out.println("enter number of items you want for each process");
+		System.out.println("enter number of instances you want for each process");
 		for (int i = 0; i < numberResouces; i++) {
 			requests[i] = input.nextInt();
 		}
@@ -79,7 +80,7 @@ public class TestProgram {
 		release=new int[numberResouces];
 		System.out.println("enter process number");
 		pNumber=input.nextInt();
-		System.out.println("enter number of items you want for each process");
+		System.out.println("enter number of items you want for each resource");
 		for (int i = 0; i < numberResouces; i++) {
 			release[i] = input.nextInt();
 		}
