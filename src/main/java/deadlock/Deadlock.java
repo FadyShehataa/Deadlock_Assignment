@@ -72,7 +72,7 @@ public class Deadlock {
         int processIdx;
         while (true) {
             processIdx = input.nextInt();
-
+            
             if (processIdx > 0 && processIdx <= numberProcesses) {
                 break;
             } else {

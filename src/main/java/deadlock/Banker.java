@@ -1,6 +1,8 @@
 package deadlock;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 enum State {
     SAFE, UNSAFE
@@ -10,13 +12,15 @@ public final class Banker {
     private final Process[] processes;
     private int[] available;
     private State state;
-    private ArrayList<Integer> safeSequence = new ArrayList<>(); // array to store safe sequence
-
+    private ArrayList<String> safeSequence = new ArrayList<>(); // array to store safe sequence
+    private boolean[] finishList;
+    
     Banker(Process[] processes, int[] available) {
         this.processes = processes;
         this.available = available;
     }
 
+    
     // Function take process and check if its need <= available(return true) ,else (return false)
     private boolean isLessThanOrEqual(Process p, int[] available) {
         for (int i = 0; i < Process.numberOfResources; i++) {
@@ -39,20 +43,28 @@ public final class Banker {
         int[] availableCopy = this.available.clone();
         Process[] processesCopy = this.processes.clone();
         
+        boolean []finish=new boolean[this.processes.length];
+        
+        for(int i=0;i<finish.length;i++)
+        {
+        	finish[i]=false;
+        }
         safeSequence = new ArrayList<>();
         boolean flag = true;
         
         while (flag) {
             flag = false;
             for (int i = 0; i < processesCopy.length; i++) {
-                if (processesCopy[i].isFinished != false) {
+                if (finish[i] != false) {
+                	
                     continue;
+                    
                 }
 
                 if (isLessThanOrEqual(processesCopy[i], availableCopy) == true) {
                     flag = true;
-                    safeSequence.add(i);
-                    processesCopy[i].isFinished = true;
+                    safeSequence.add("p"+(i+1));
+                    finish[i] = true;
                     sumAvailable(processesCopy[i], availableCopy);
                 }
             }
@@ -63,6 +75,7 @@ public final class Banker {
         }else{
             this.state = State.UNSAFE;
         }
+        this.finishList=finish;
     }
     
     public void setAvailable(int[] available){
@@ -73,12 +86,14 @@ public final class Banker {
     public State getState(){
         return this.state;
     }
-
+    
     @Override
     public String toString() {
         return 
             "Sequence: " + safeSequence.toString() + "\n" + 
-            "State: " +  state + "\n" ;
+            "Finish List: " +  Arrays.toString(finishList) + "\n" +
+            "State: " +  state + "\n"
+            ;
     }
     
     

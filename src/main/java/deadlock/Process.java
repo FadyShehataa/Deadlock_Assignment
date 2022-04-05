@@ -10,7 +10,6 @@ public final class Process {
     public int[] allocation;
     private final int[] maximum;
     public int[] need;
-    public boolean isFinished = false;
     
     public Process(String id, int priority, int[] allocation, int[] maximum) {
         this.id = id;
@@ -38,9 +37,14 @@ public final class Process {
             "Process Priority: " + this.priority + "\n" +
             "Process Maximum: " + Arrays.toString(this.maximum) + "\n" +  
             "Process Allocation: " + Arrays.toString(this.allocation)+ "\n" +
-            "Process Need: " + Arrays.toString(this.need) + "\n" +
-            "Process Is Finished: " + this.isFinished + "\n";
+            "Process Need: " + Arrays.toString(this.need) + "\n" ;
     }
     
+    @Override
+    public Process clone() throws CloneNotSupportedException {
+    	
+    	return new Process(this.id,this.priority,this.allocation,this.maximum);
+   
+    }
     
 }
