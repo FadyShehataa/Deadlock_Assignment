@@ -1,7 +1,7 @@
 package deadlock;
 
 public class Actions {
-/*
+
     public static void requestResources(int[] available, Process process, int[] request) {
         boolean flag = true;
 
@@ -20,17 +20,14 @@ public class Actions {
             }
         }
     }
-*/
-	public static void requestResources(int[] available, Process process, int[] request)
-	{
-		for(int i=0;i<request.length;i++)
-		{
-			process.need[i] += request[i];
-		}
-	}
-	
+    
+//    public static void requestResources(int[] available, Process process, int[] request) {
+//        for (int i = 0; i < request.length; i++) {
+//            process.need[i] += request[i];
+//        }
+//    }
+
     public static void releaseResources(int[] available, Process process, int[] release) {
-    	
         boolean flag = true;
 
         for (int i = 0; i < process.allocation.length; i++) {
