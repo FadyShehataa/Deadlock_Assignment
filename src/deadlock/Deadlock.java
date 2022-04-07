@@ -6,8 +6,8 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class Deadlock {
-    // test case => 3 3 3 2 5 0 7 5 3 0 1 0 0 3 2 2 2 0 0 0 9 0 2 3 0 2 0 2 2 2 2 1 1 0 4 3 3 0 0 2 (SAFE)
-	// test case => 3 3 3 2 5 0 7 5 3 0 1 0 0 3 2 2 2 0 0 0 19 0 2 3 0 2 0 2 2 2 2 1 1 0 4 3 3 0 0 2 (UNSAFE)
+    // test case => 3 3 3 2 5 7 5 3 0 1 0 3 2 2 2 0 0 9 0 2 3 0 2 2 2 2 2 1 1 4 3 3 0 0 2 (SAFE)
+	// test case => 3 3 3 2 5 7 5 3 0 1 0 3 2 2 2 0 0 19 0 2 3 0 2 2 2 2 2 1 1 4 3 3 0 0 2 (UNSAFE)
 	// priority => 90 10 2 1 30
     public static final Scanner input = new Scanner(System.in);
 
@@ -49,9 +49,6 @@ public class Deadlock {
             int allocation[] = new int[numberResouces];
             int cnt = i + 1;
 
-            System.out.print("Enter priortiy of P" + cnt + ": ");
-            int priority = input.nextInt();
-
             System.out.print("Enter maximum of P" + cnt + ": ");
             for (int j = 0; j < numberResouces; j++) {
                 maximum[j] = input.nextInt();
@@ -62,7 +59,7 @@ public class Deadlock {
                 allocation[j] = input.nextInt();
             }
 
-            processes[i] = new Process(("p"+cnt), priority, allocation, maximum);
+            processes[i] = new Process(("p"+cnt), allocation, maximum);
 
             System.out.println("");
         }

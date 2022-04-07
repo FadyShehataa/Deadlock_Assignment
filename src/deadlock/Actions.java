@@ -58,7 +58,7 @@ public class Actions {
     	
         Map< Integer, Integer> map =new HashMap<Integer, Integer>();
         
-        System.out.println("Enter priority for each process");
+        System.out.println("Enter priority for each process(Low priority(0) , High priority(10))");
         System.out.println("you shouldn't enter the same priority to different processes");
         int cnt = 1 ;
         for(int i = 0 ; i < processes.length ; i++) {
