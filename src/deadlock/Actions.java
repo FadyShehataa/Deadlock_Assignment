@@ -101,9 +101,16 @@ public class Actions {
             }
             
             int[] availableCopy = available.clone();
+            
             b.sumAvailable(victim, availableCopy);
             b.checkState(processesCopy, availableCopy);
             if(b.getState() == State.SAFE) {
+            	b.sumAvailable(victim, available);
+            	for(int k = 0 ; k < available.length ; k++) {
+            		processes[priority[i]].allocation[k] = 0 ;
+            		processes[priority[i]].maximum()[k] = 0 ;
+            	}
+            	processes[priority[i]].calculateNeed();
             	break ;
             }
         }
@@ -114,6 +121,7 @@ public class Actions {
         else {
 			System.out.println("\ncan't make system in safe system\n");
 		}
+        
         
     }
 
