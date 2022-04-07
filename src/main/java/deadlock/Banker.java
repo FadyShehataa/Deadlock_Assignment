@@ -8,17 +8,10 @@ enum State {
 };
 
 public final class Banker {
-    private final Process[] processes;
-    private int[] available;
-    private State state;
 
+    private State state;
     private ArrayList<String> safeSequence = new ArrayList<>(); // array to store safe sequence
     private boolean[] finishList;
-
-    Banker(Process[] processes, int[] available) {
-        this.processes = processes;
-        this.available = available;
-    }
 
     // Function take process and check if its need <= available(return true) ,else (return false)
     private boolean isLessThanOrEqual(Process p, int[] available) {
@@ -32,26 +25,26 @@ public final class Banker {
     }
 
     // function takes process and sum its allocation with available
-    private void sumAvailable(Process p, int[] available) {
+    public void sumAvailable(Process p, int[] available) {
         for (int i = 0; i < Process.numberOfResources; i++) {
             available[i] += p.allocation[i];
         }
     }
 
-    public void checkState() {
+    public void checkState(Process[] processes , int[] available) {
         // takiny a copy of the available
-        int[] availableCopy = this.available.clone();
+        int[] availableCopy = available.clone();
         
         //taking a copy of processes
-        Process[] processesCopy = new Process[this.processes.length];
-        for(int i=0; i<this.processes.length; i++){
-            processesCopy[i] = this.processes[i].copy();
+        Process[] processesCopy = new Process[processes.length];
+        for(int i=0; i<processes.length; i++){
+            processesCopy[i] = processes[i].copy();
         }
 
         safeSequence = new ArrayList<>();
         
         // initilize finish list with false
-        finishList = new boolean[this.processes.length];
+        finishList = new boolean[processes.length];
         for (int i = 0; i < finishList.length; i++) {
             finishList[i] = false;
         }
@@ -81,11 +74,6 @@ public final class Banker {
         }
     }
 
-    public void setAvailable(int[] available) {
-        this.available = available;
-        this.checkState();
-    }
-
     public State getState() {
         return this.state;
     }
@@ -96,5 +84,5 @@ public final class Banker {
                 + "Finish List: " + Arrays.toString(finishList) + "\n"
                 + "State: " + state + "\n";
     }
-
+     
 }

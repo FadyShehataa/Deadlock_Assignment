@@ -6,9 +6,11 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class Deadlock {
-    // test case => 3 3 3 2 5 0 7 5 3 0 1 0 0 3 2 2 2 0 0 0 9 0 2 3 0 2 0 2 2 2 2 1 1 0 4 3 3 0 0 2 (SAFE)
-
-    private static final Scanner input = new Scanner(System.in);
+    // test case => 3 3 3 2 5 7 5 3 0 1 0 3 2 2 2 0 0 9 0 2 3 0 2 2 2 2 2 1 1 4 3 3 0 0 2 (SAFE)
+    // test case => 3 3 3 2 5 7 5 3 0 1 0 3 2 2 2 0 0 19 0 2 3 0 2 2 2 2 2 1 1 4 3 3 0 0 2 (UNSAFE)
+    // priority => 90 10 2 1 30
+    
+    public static final Scanner input = new Scanner(System.in);
 
     private static Banker banker;
 
@@ -48,9 +50,6 @@ public class Deadlock {
             int allocation[] = new int[numberResouces];
             int cnt = i + 1;
 
-            System.out.print("Enter priortiy of P" + cnt + ": ");
-            int priority = input.nextInt();
-
             System.out.print("Enter maximum of P" + cnt + ": ");
             for (int j = 0; j < numberResouces; j++) {
                 maximum[j] = input.nextInt();
@@ -61,7 +60,7 @@ public class Deadlock {
                 allocation[j] = input.nextInt();
             }
 
-            processes[i] = new Process(("p"+cnt), priority, allocation, maximum);
+            processes[i] = new Process(("p"+cnt), allocation, maximum);
 
             System.out.println("");
         }
@@ -92,7 +91,7 @@ public class Deadlock {
 
         return requestInfo;
     }
-
+    
     private static void display(){
         System.out.println("Available: " + Arrays.toString(available)+"\n");
         
@@ -101,11 +100,11 @@ public class Deadlock {
         }
         
         System.out.println(banker);
+        
+        System.out.println("\n---------------------------------------------------------\n");
     }
     
     private static void userMenu() {
-        banker.checkState();
-        display();
         int userInput;
 
         System.out.println("1- Request Resourses");
@@ -121,10 +120,19 @@ public class Deadlock {
 
             switch (userInput) {
                 case 1: {
-                    Map requestInfo = changeProcessResources();
-                    Process p = (Process)requestInfo.get("process");
-                    int[] resources = (int[])requestInfo.get("recourses");
-                    Actions.requestResources(available, p, resources);
+                    if(banker.getState() == State.SAFE){
+                        Map requestInfo = changeProcessResources();
+                        Process p = (Process)requestInfo.get("process");
+                        int[] resources = (int[])requestInfo.get("recourses");
+                        Actions.requestResources(available, p, resources);
+                        banker.checkState(processes , available);
+                        display();
+                    }else{
+                        System.out.println("\n*************************************************");
+                        System.out.println("You can't request, the state is unsafe!");
+                        System.out.println("*************************************************\n");
+                    }
+                    
                     userMenu();
                 }
                 case 2: {
@@ -132,10 +140,14 @@ public class Deadlock {
                     Process p = (Process)requestInfo.get("process");
                     int[] resources = (int[])requestInfo.get("recourses");
                     Actions.releaseResources(available, p, resources);
+                    banker.checkState(processes , available);
+                    display();
                     userMenu();
                 }
                 case 3: {
-                    Actions.recover();
+                    Actions.recover(processes , available);
+                    banker.checkState(processes , available);
+                    display();
                     userMenu();
                 }
                 case 4: {
@@ -161,8 +173,14 @@ public class Deadlock {
 
         // getting processes information from the user
         enterProcessInformation();
+        
+        
+        System.out.println("\n\n");
 
-        banker = new Banker(processes, available);
+        banker = new Banker();
+        
+        banker.checkState(processes , available);
+        display();
 
         /* 
             display the available choices to the user, then get his/her choice, and 
